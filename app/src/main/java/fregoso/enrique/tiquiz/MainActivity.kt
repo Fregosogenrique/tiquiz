@@ -7,38 +7,41 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import fregoso.enrique.tiquiz.ui.theme.TiquizTheme
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-    private val questionBank = ListOf(
-        Question(R.string.question_cpu, false),
-        Question(R.string.question_gpu, false),
-        Question(R.string.question_ssh, true),
-        Question(R.string.question_keyboard, true)
-    )
-    private var currentIndex = 0
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        binding.trueButton.setOnClickListener { view: View ->
-            //Toast.makeText(this,R.string.correct_toast,Toast.LENGTH_SHORT)
-            val snackBar = Snackbar.make(view, R.string.correct_toast, Snackbar.LENGTH_LONG)
-            snackBar.setBackgroundTint(resources.getColor(R, color.verde))
-            snackBar.show()
+        enableEdgeToEdge()
+        setContent {
+            TiquizTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Greeting(
+                        name = "Android",
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                }
+            }
         }
-        binding.FalseButton.SetOnClickListener { view: View ->
-            Toast.makeText(this, R.string.incorrect_toast, Toast.LENGTH_SHORT).show()
-        }
-        val questionIdRes = questionBank[currentIndex].textResId
-        binding.questionTextView.setText(questionIdRes)
+    }
+}
 
+@Composable
+fun Greeting(name: String, modifier: Modifier = Modifier) {
+    Text(
+        text = "Hello $name!",
+        modifier = modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    TiquizTheme {
+        Greeting("Android")
     }
 }
